@@ -1,0 +1,3 @@
+# Przekazania pracy między sesjami agentów. Zawierają kontekst prywatny
+# (plany, kontekst pracodawcy), a repo jest publiczne: nigdy ich nie commituj.
+docs/handoff/
