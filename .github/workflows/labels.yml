@@ -1,0 +1,28 @@
+# Zakłada wspólny zestaw etykiet. GitHub nie kopiuje etykiet z template,
+# więc robi to ten workflow przy pierwszym pushu nowego repo i przy każdej
+# zmianie tego pliku. Usunięcie wiersza nie kasuje etykiety z repo.
+name: Etykiety
+
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/labels.yml]
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Załóż lub zaktualizuj etykiety
+        run: |
+          label() { gh label create "$1" --repo "$GITHUB_REPOSITORY" --color "$2" --description "$3" --force; }
+          label needs-triage    fbca04 "Maintainer needs to evaluate this issue"
+          label needs-info      d876e3 "Waiting on reporter for more information"
+          label ready-for-agent 0e8a16 "Fully specified, ready for an AFK agent"
+          label ready-for-human 1d76db "Requires human implementation"
+          label decision        5319e7 "Decyzja albo checkpoint, zamykane komentarzem z wynikiem"
